@@ -1,0 +1,146 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>Drag drop and arrange boxes. - jsFiddle demo</title>
+  
+  <script type='text/javascript' src='http://code.jquery.com/jquery-1.9.1.js'></script>
+  
+  
+  
+  <script type="text/javascript" src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+  <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css">
+  
+  <link rel="stylesheet" type="text/css" href="/css/result-light.css">
+  
+  <style type='text/css'>
+    .box-triangles {
+	width: 20px !important; 
+	height: 20px !important; 
+	border-width:10px  !important;
+    border-style:solid  !important;
+    border-color:green red yellow blue !important;
+    float:left;
+    margin:0px;
+}
+
+.shawdow{
+    border-
+}
+
+.box {
+    width:50px;
+    height:50px;
+    color:blue;
+    border-width:1px;
+    border-style:solid;
+    border-color:black;
+    float:left;
+    margin-left:10px;
+    margin-top:10px;
+}
+.clear {
+    clear:both;
+}
+.drop-area {
+    width:300px;
+    height:300px;
+    border-width:2px;
+    border-style:dotted;
+    margin-top:20px;
+    float:left;
+}
+
+.remove-box-area{
+    width:100px;
+    height:100px;
+    background-color:pink;
+    float:left;
+    margin-top:20px;
+    margin-left:10px;
+    border-style:solid;
+    border-width:2px;
+    border-color:red;
+    color:red;
+}
+
+.sortable-box {
+    transition: background-color 1s;
+
+}
+  </style>
+  
+
+
+<script type='text/javascript'>//<![CDATA[ 
+$(window).load(function(){
+$(".drop-area").droppable({
+    drop: function (event, ui) {
+        var dragItem = ui.draggable.clone();
+        
+        if(!dragItem.hasClass("moveable-box")){
+            return;
+        }
+
+        dragItem.removeClass("moveable-box");
+        dragItem.addClass("sortable-box");
+
+        $(this).append(dragItem);
+        $(".drop-area").sortable();
+    }
+});
+
+var boxes = ['blue', 'red', 'orange','green','yellow'];
+
+$.each(boxes, function () {
+    $(".colored-boxes").append('<div data-color='+this+' class="box moveable-box" style="background-color:' + this + '"></div>');
+});
+
+$(".moveable-box").draggable({
+    cursor: 'move',
+    helper: function () {
+        return this.outerHTML
+    }
+});
+
+$(".remove-box-area").droppable({
+    drop:function(event,ui){
+        if(ui.draggable.hasClass('sortable-box')){
+            ui.draggable.remove();
+        }
+    }
+});
+
+$(document).on("dblclick", ".sortable-box", function (e) {
+    e.preventDefault();
+    var index = boxes.indexOf($( this ).attr( "data-color" ));
+    index = index +1;
+    if(index> boxes.length-1){
+        index=0;
+    }
+    $(this).attr("data-color",boxes[index]);
+    $(this).css("background-color",boxes[index]);
+    
+    
+    
+});
+});//]]>  
+
+</script>
+
+
+</head>
+<body>
+  <h3>Drag and drop the boxes into the area below</h3>
+
+<div class="colored-boxes"><div class="box-triangles box moveable-box"></div></div>
+<div class='clear'></div>
+<div class="drop-area"></div>
+<div class="remove-box-area">Drag here to remove</div>
+  
+</body>
+
+
+</html>
+
