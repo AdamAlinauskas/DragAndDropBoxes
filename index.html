@@ -108,6 +108,9 @@ $(".remove-box-area").droppable({
     drop:function(event,ui){
         if(ui.draggable.hasClass('sortable-box')){
             ui.draggable.remove();
+            var dragItem = ui.draggable.clone();
+            $(this).append(dragItem);
+            dragItem.hide('puff', function() { dragItem.remove(); });
         }
     }
 });
